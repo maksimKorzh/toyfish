@@ -1,13 +1,17 @@
 {
-    "fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1 ",
+	"variant": "chess",
+    "fen": "rnbqkbnr/pppppppZ/8/8/2r5/Pr6/1PPPPPPP/RNBQKBNR w KQkq - 0 1 ",
     "offset": 8,
+    "rank_2": [89, 90, 91, 92, 93, 94, 95, 96],
+    "rank_7": [34, 25, 26, 27, 38, 39, 40, 41],
     "directions": {
-        "P": "N N+E N+W",
+        "P": "N N+E N+W N+N",
         "N": "N+N+E N+N+W S+S+E S+S+W N+E+E N+W+W S+E+E S+W+W",
         "B": "N+E N+W S+E S+W",
         "R": "N E S W",
         "Q": "N E S W N+E N+W S+E S+W",
         "K": "N E S W N+E N+W S+E S+W"
     },
+    "leapers": "PNK",
     "weights": {"P": 100, "N": 300, "B": 350, "R": 500, "Q": 900}
 }
