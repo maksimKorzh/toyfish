@@ -4,16 +4,13 @@ class Chess:
     def __init__(self, variant):
         with open(variant) as f:
             settings = json.loads(f.read())
+            self.__dict__ = settings
             start_fen = settings['start_fen']
             row = settings['offset'] + 2
-            self.variant = settings['variant']
-            self.leapers = settings['leapers']
-            self.N, self.S, self.E, self.W = -(row + 1), row + 1, 1, -1
-            self.board = list((row * 'x' + '\n') * 2 + 'x' + ''.join([
+            self.board = list((row * ' ' + '\n') * 2 + ' ' + ''.join([
                 '.' * int(c) if c.isdigit() else c
-                for c in start_fen.split()[0].replace('/', 'x\nx')
-            ]) + 'x\n' + (row * 'x' + '\n') * 2)
-            self.directions = {}
+                for c in start_fen.split()[0].replace('/', ' \n ')
+            ]) + ' \n' + (row * ' ' + '\n') * 2)
             for piece, offsets in settings['directions'].items():
                 directions = (
                     offsets.replace('N', str(-(row + 1)))
@@ -22,13 +19,7 @@ class Chess:
                            .replace('W', '-1')
                 ).split()
                 self.directions[piece] = [eval(d) for d in directions]
-            self.weights = settings['weights']
-            self.pst = settings['pst']
-            self.best_source = -1
-            self.best_target = -1
-            if self.variant == 'chess':
-                self.rank_2 = settings['rank_2']
-                self.rank_7 = settings['rank_7']
+            self.N, self.S, self.E, self.W = -(row + 1), row + 1, 1, -1
     
     def rotate(self):
         self.board = list(''.join(self.board)[::-1].swapcase())
@@ -37,7 +28,7 @@ class Chess:
         move_list = []
         for square in range(len(self.board)):
             piece = self.board[square]
-            if piece not in '.x\n' and piece.isupper():
+            if piece not in ' .\n' and piece.isupper():
                 for piece_type, offsets in self.directions.items():
                     if piece == piece_type:
                         for offset in offsets:
@@ -45,16 +36,15 @@ class Chess:
                             while True:
                                 target_square += offset
                                 captured_piece = self.board[target_square]
-                                if captured_piece == 'x' or captured_piece.isupper(): break
+                                if captured_piece == ' ' or captured_piece.isupper(): break
                                 if captured_piece == 'k': return []
-                                if self.variant == 'chess':
-                                    if piece == 'P':
-                                        if offset == self.directions['P'][0] and captured_piece != '.': break
-                                        if offset in self.directions['P'][1: -1] and captured_piece == '.': break
-                                        if offset == self.directions['P'][-1]:
-                                            if square not in self.rank_2: break
-                                            if self.board[target_square + self.S] != '.': break
-                                            if captured_piece != '.': break
+                                if piece == 'P':
+                                    if offset == self.directions['P'][0] and captured_piece != '.': break
+                                    if offset in self.directions['P'][1: -1] and captured_piece == '.': break
+                                    if offset == self.directions['P'][-1]:
+                                        if square not in self.rank_2: break
+                                        if self.board[target_square + self.S] != '.': break
+                                        if captured_piece != '.': break
                                 move_list.append({
                                     "source": square,
                                     "target": target_square,
@@ -68,17 +58,16 @@ class Chess:
     def make_move(self, move):
         self.board[move['target']] = move['piece']
         self.board[move['source']] = '.'
-        if self.variant in ['chess']:
-            if move['piece'] == 'P' and move['source'] in self.rank_7:
-                self.board[move['target']] = 'Q'
-        #print(''.join(self.board)); input()
+        if move['piece'] == 'P' and move['source'] in self.rank_7:
+            self.board[move['target']] = 'Q'
+        print(''.join(self.board)); input()
         self.rotate()
     
     def take_back(self, move):
         self.rotate()
         self.board[move['target']] = move['captured']
         self.board[move['source']] = move['piece']
-        #print(''.join(self.board)); input()
+        print(''.join(self.board)); input()
         
     def search(self, alpha, beta, depth):
         if depth == 0: self.evaluate()
@@ -105,7 +94,7 @@ class Chess:
         score = 0
         for square in range(len(self.board)):
             piece = self.board[square]
-            if piece not in '.x\n':
+            if piece not in ' .\n':
                 score += self.weights[piece]
                 if piece.islower(): score -= self.pst[square]
                 if piece.isupper(): score += self.pst[square]
@@ -113,7 +102,11 @@ class Chess:
         return score
     
     def game_loop(self):
-        pass
+        for move in self.generate_moves():
+            self.make_move(move)
+            self.take_back(move)
+        
+        
 
 if __name__ == '__main__':
     chess = Chess('chess.json')
