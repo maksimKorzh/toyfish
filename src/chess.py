@@ -102,15 +102,17 @@ class Chess:
         return -score
     
     def game_loop(self):
+        side = 0 if self.start_fen.split()[1] == 'w' else 1
+        print(side)        
         while True:
             score = self.search(-10000, 10000, 3)
-            print(''.join(self.board))
-            #self.make_move({
-            #    'source': self.best_source, 'target': self.best_target,
-            #    'piece': self.board[self.best_source], 'captured': self.board[self.best_target]
-            #})
-            #print(''.join(self.board))
-            #print(score)
+            self.make_move({
+                'source': self.best_source, 'target': self.best_target,
+                'piece': self.board[self.best_source], 'captured': self.board[self.best_target]
+            })
+            side ^= 1
+            if side: print(''.join(self.board[::-1]).swapcase())
+            else: print(''.join(self.board))
             input()
 
 if __name__ == '__main__':
