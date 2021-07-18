@@ -69,27 +69,19 @@ class Chess:
         self.board[move['source']] = move['piece']
         #print(''.join(self.board)); input()
         
-    def search(self, alpha, beta, depth):
-        if depth == 0: return self.evaluate()
-        old_alpha = alpha
-        temp_source = -1
-        temp_target = -1
+    def search(self, depth):
+        if depth == 0: return self.evaluate();
+        best_score = -10000;
         for move in self.generate_moves():
             self.make_move(move)
-            score = self.search(-beta, -alpha, depth - 1)
+            score = -self.search(depth - 1)
             self.take_back(move)
-            self.best_source = move['source']
-            self.best_target = move['target']
-            #if score >= beta: return beta
-            if score > alpha:
-                alpha = score
-                temp_source = move['source']
-                temp_target = move['target']
-        if alpha != old_alpha:
-            self.best_source = temp_source;
-            self.best_target = temp_target;
-        return alpha
-    
+            if score > best_score:
+                best_score = score
+                self.best_source = move['source']
+                self.best_target = move['target']
+        return best_score
+
     def evaluate(self):
         score = 0
         for square in range(len(self.board)):
@@ -99,13 +91,13 @@ class Chess:
                 if piece.islower(): score -= self.pst[square]
                 if piece.isupper(): score += self.pst[square]
         
-        return -score
+        return score
     
     def game_loop(self):
         side = 0 if self.start_fen.split()[1] == 'w' else 1
         print(side)        
         while True:
-            score = self.search(-10000, 10000, 3)
+            score = self.search(3)
             self.make_move({
                 'source': self.best_source, 'target': self.best_target,
                 'piece': self.board[self.best_source], 'captured': self.board[self.best_target]
