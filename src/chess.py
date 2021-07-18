@@ -5,17 +5,16 @@ class Chess:
     def __init__(self, variant):
         with open(variant) as f:
             settings = json.loads(f.read())
-            fen = settings['fen']
+            start_fen = settings['start_fen']
             row = settings['offset'] + 2
             self.variant = settings['variant']
             self.leapers = settings['leapers']
-            self.N, self.S = -(row + 1), row + 1
-            self.E, self.W = 1, -1
+            self.N, self.S, self.E, self.W = -(row + 1), row + 1, 1, -1
             self.rank_2 = settings['rank_2']
             self.rank_7 = settings['rank_7']
             self.board = list((row * 'x' + '\n') * 2 + 'x' + ''.join([
                 '.' * int(c) if c.isdigit() else c
-                for c in fen.split()[0].replace('/', 'x\nx')
+                for c in start_fen.split()[0].replace('/', 'x\nx')
             ]) + 'x\n' + (row * 'x' + '\n') * 2)
             self.directions = {}
             for piece, offsets in settings['directions'].items():
@@ -28,9 +27,10 @@ class Chess:
                 self.directions[piece] = [eval(d) for d in directions]
     
     def rotate(self):
-        return list(''.join(self.board)[::-1].swapcase())
+        self.board = list(''.join(self.board)[::-1].swapcase())
     
     def generate_moves(self):
+        move_list = []
         for square in range(len(self.board)):
             piece = self.board[square]
             if piece not in '.x\n' and piece.isupper():
@@ -40,29 +40,46 @@ class Chess:
                             target_square = square
                             while True:
                                 target_square += offset
-                                captured = self.board[target_square]
-                                if captured == 'x' or captured.isupper(): break
+                                captured_piece = self.board[target_square]
+                                if captured_piece == 'x' or captured_piece.isupper(): break
                                 if self.variant == 'chess':
                                     if piece == 'P':
-                                        if offset == self.directions['P'][0] and captured != '.': break
-                                        if offset in self.directions['P'][1: -1] and captured == '.': break
+                                        if offset == self.directions['P'][0] and captured_piece != '.': break
+                                        if offset in self.directions['P'][1: -1] and captured_piece == '.': break
                                         if offset == self.directions['P'][-1]:
                                             if square not in self.rank_2: break
                                             if self.board[target_square + self.S] != '.': break
-                                            if captured != '.': break
-                                        
-                                      
-                                self.board[target_square] = piece
-                                self.board[square] = '.'
-                                print(''.join(self.board)); input()
-                                
-                                self.board[target_square] = captured
-                                self.board[square] = piece
-                                print(''.join(self.board)); input()
-                                
+                                            if captured_piece != '.': break
+                                move_list.append({
+                                    "source": square,
+                                    "target": target_square,
+                                    "piece": piece,
+                                    "captured": captured_piece
+                                })
                                 if piece in self.leapers: break
+        return move_list
+                                
+    def make_move(self, move):
+        self.board[move['target']] = move['piece']
+        self.board[move['source']] = '.'
+        print(''.join(self.board)); input()
+        self.rotate()
+    
+    def take_back(self, move):
+        self.rotate()
+        self.board[move['target']] = move['captured']
+        self.board[move['source']] = move['piece']
+        print(''.join(self.board)); input()
         
+    def search(self, depth):
+        if depth == 0: return
+        move_list = self.generate_moves()
+        for move in move_list:
+            self.make_move(move)
+            self.search(depth - 1)
+            self.take_back(move)
+
 if __name__ == '__main__':
     chess = Chess('chess.json')
-    chess.generate_moves()
+    chess.search(2)
     
