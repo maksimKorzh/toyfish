@@ -65,6 +65,8 @@ class Chess:
         temp_source = -1
         temp_target = -1
         for move in self.generate_moves():
+            if move['captured'] == 'K': return -20000
+            if move['captured'] == 'k': return 20000
             self.make_move(move)
             score = -self.search(depth - 1)
             self.take_back(move)
@@ -104,7 +106,7 @@ class Chess:
                 'source': self.best_source, 'target': self.best_target,
                 'piece': self.board[self.best_source], 'captured': self.board[self.best_target]
             })
-            print(''.join([' ' + p for p in chess.board]), 'side:', self.side)
+            print(''.join([' ' + p for p in chess.board]), 'side:', self.side, '  score:', score)
 
 if __name__ == '__main__':
     chess = Chess('settings.json')
