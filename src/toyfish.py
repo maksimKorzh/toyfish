@@ -35,6 +35,7 @@ class Chess:
                         if piece == 'p' and offset == 20:
                             if square not in self.rank_7: break
                             if self.board[square + 10] != '.': break
+                        if captured_piece in 'Kk': return []
                         move_list.append({
                             'source': square, 'target': target_square,
                             'piece': piece, 'captured': captured_piece
@@ -87,19 +88,25 @@ class Chess:
         return -score if self.side else score
     
     def game_loop(self):
+        print(''.join([' ' + p for p in chess.board]), 'side:', self.side)
         while True:
+            raw = input(' your move: ')
+            if len(raw) < 4: continue
+            user_source = self.coordinates.index(raw[0] + raw[1])
+            user_target = self.coordinates.index(raw[2] + raw[3])
+            self.make_move({
+                'source': user_source, 'target': user_target,
+                'piece': self.board[user_source], 'captured': self.board[user_target]
+            })
+            print(''.join([' ' + p for p in chess.board]), 'side:', self.side)
             score = self.search(3)
             self.make_move({
                 'source': self.best_source, 'target': self.best_target,
                 'piece': self.board[self.best_source], 'captured': self.board[self.best_target]
             })
             print(''.join([' ' + p for p in chess.board]), 'side:', self.side)
-            input()
 
 if __name__ == '__main__':
     chess = Chess('settings.json')
-    print(''.join(chess.board), 'side:', chess.side)
-    #score = chess.search(4)
-    #print(chess.best_source, chess.best_target)
     chess.game_loop()
     
