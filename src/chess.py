@@ -60,17 +60,17 @@ class Chess:
         self.board[move['source']] = '.'
         if move['piece'] == 'P' and move['source'] in self.rank_7:
             self.board[move['target']] = 'Q'
-        print(''.join(self.board)); input()
+        #print(''.join(self.board)); input()
         self.rotate()
     
     def take_back(self, move):
         self.rotate()
         self.board[move['target']] = move['captured']
         self.board[move['source']] = move['piece']
-        print(''.join(self.board)); input()
+        #print(''.join(self.board)); input()
         
     def search(self, alpha, beta, depth):
-        if depth == 0: self.evaluate()
+        if depth == 0: return self.evaluate()
         old_alpha = alpha
         temp_source = -1
         temp_target = -1
@@ -80,7 +80,7 @@ class Chess:
             self.take_back(move)
             self.best_source = move['source']
             self.best_target = move['target']
-            if score >= beta: return beta
+            #if score >= beta: return beta
             if score > alpha:
                 alpha = score
                 temp_source = move['source']
@@ -99,14 +99,19 @@ class Chess:
                 if piece.islower(): score -= self.pst[square]
                 if piece.isupper(): score += self.pst[square]
         
-        return score
+        return -score
     
     def game_loop(self):
-        for move in self.generate_moves():
-            self.make_move(move)
-            self.take_back(move)
-        
-        
+        while True:
+            score = self.search(-10000, 10000, 3)
+            print(''.join(self.board))
+            #self.make_move({
+            #    'source': self.best_source, 'target': self.best_target,
+            #    'piece': self.board[self.best_source], 'captured': self.board[self.best_target]
+            #})
+            #print(''.join(self.board))
+            #print(score)
+            input()
 
 if __name__ == '__main__':
     chess = Chess('chess.json')
