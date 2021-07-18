@@ -1,5 +1,4 @@
 # coding: utf-8
-# %load chess.py
 import json
 class Chess:
     def __init__(self, variant):
@@ -10,8 +9,6 @@ class Chess:
             self.variant = settings['variant']
             self.leapers = settings['leapers']
             self.N, self.S, self.E, self.W = -(row + 1), row + 1, 1, -1
-            self.rank_2 = settings['rank_2']
-            self.rank_7 = settings['rank_7']
             self.board = list((row * 'x' + '\n') * 2 + 'x' + ''.join([
                 '.' * int(c) if c.isdigit() else c
                 for c in start_fen.split()[0].replace('/', 'x\nx')
@@ -25,6 +22,13 @@ class Chess:
                            .replace('W', '-1')
                 ).split()
                 self.directions[piece] = [eval(d) for d in directions]
+            self.weights = settings['weights']
+            self.pst = settings['pst']
+            self.best_source = -1
+            self.best_target = -1
+            if self.variant == 'chess':
+                self.rank_2 = settings['rank_2']
+                self.rank_7 = settings['rank_7']
     
     def rotate(self):
         self.board = list(''.join(self.board)[::-1].swapcase())
@@ -42,6 +46,7 @@ class Chess:
                                 target_square += offset
                                 captured_piece = self.board[target_square]
                                 if captured_piece == 'x' or captured_piece.isupper(): break
+                                if captured_piece == 'k': return []
                                 if self.variant == 'chess':
                                     if piece == 'P':
                                         if offset == self.directions['P'][0] and captured_piece != '.': break
@@ -56,30 +61,61 @@ class Chess:
                                     "piece": piece,
                                     "captured": captured_piece
                                 })
+                                if captured_piece.islower(): break
                                 if piece in self.leapers: break
         return move_list
                                 
     def make_move(self, move):
         self.board[move['target']] = move['piece']
         self.board[move['source']] = '.'
-        print(''.join(self.board)); input()
+        if self.variant in ['chess']:
+            if move['piece'] == 'P' and move['source'] in self.rank_7:
+                self.board[move['target']] = 'Q'
+        #print(''.join(self.board)); input()
         self.rotate()
     
     def take_back(self, move):
         self.rotate()
         self.board[move['target']] = move['captured']
         self.board[move['source']] = move['piece']
-        print(''.join(self.board)); input()
+        #print(''.join(self.board)); input()
         
-    def search(self, depth):
-        if depth == 0: return
-        move_list = self.generate_moves()
-        for move in move_list:
+    def search(self, alpha, beta, depth):
+        if depth == 0: self.evaluate()
+        old_alpha = alpha
+        temp_source = -1
+        temp_target = -1
+        for move in self.generate_moves():
             self.make_move(move)
-            self.search(depth - 1)
+            score = self.search(-beta, -alpha, depth - 1)
             self.take_back(move)
+            self.best_source = move['source']
+            self.best_target = move['target']
+            if score >= beta: return beta
+            if score > alpha:
+                alpha = score
+                temp_source = move['source']
+                temp_target = move['target']
+        if alpha != old_alpha:
+            self.best_source = temp_source;
+            self.best_target = temp_target;
+        return alpha
+    
+    def evaluate(self):
+        score = 0
+        for square in range(len(self.board)):
+            piece = self.board[square]
+            if piece not in '.x\n':
+                score += self.weights[piece]
+                if piece.islower(): score -= self.pst[square]
+                if piece.isupper(): score += self.pst[square]
+        
+        return score
+    
+    def game_loop(self):
+        pass
 
 if __name__ == '__main__':
     chess = Chess('chess.json')
-    chess.search(2)
+    chess.game_loop()
     
