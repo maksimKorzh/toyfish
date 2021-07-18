@@ -60,14 +60,19 @@ class Chess:
     def search(self, depth):
         if depth == 0: return self.evaluate();
         best_score = -10000;
+        old_score = best_score
+        temp_source = -1
+        temp_target = -1
         for move in self.generate_moves():
             self.make_move(move)
             score = -self.search(depth - 1)
             self.take_back(move)
             if score > best_score:
                 best_score = score
-                self.best_source = move['source']
-                self.best_target = move['target']
+                temp_source = move['source']
+                temp_target = move['target']
+        self.best_source = temp_source
+        self.best_target = temp_target
         return best_score
 
     def evaluate(self):
@@ -83,18 +88,18 @@ class Chess:
     
     def game_loop(self):
         while True:
-            score = self.search(2)
+            score = self.search(3)
             self.make_move({
                 'source': self.best_source, 'target': self.best_target,
                 'piece': self.board[self.best_source], 'captured': self.board[self.best_target]
             })
-            print(''.join(chess.board), 'side:', self.side)
+            print(''.join([' ' + p for p in chess.board]), 'side:', self.side)
             input()
 
 if __name__ == '__main__':
     chess = Chess('settings.json')
     print(''.join(chess.board), 'side:', chess.side)
-    score = chess.search(4)
-    print(chess.best_source, chess.best_target)
-    #chess.game_loop()
+    #score = chess.search(4)
+    #print(chess.best_source, chess.best_target)
+    chess.game_loop()
     
