@@ -46,15 +46,15 @@ class Chess:
     def make_move(self, move):
         self.board[move['target']] = move['piece']
         self.board[move['source']] = '.'
-        if move['piece'] == 'P' and move['source'] in self.rank_7:
-            self.board[move['target']] = 'Q'
-        print(''.join(chess.board), 'side:', chess.side); input()
+        #if move['piece'] == 'P' and move['source'] in self.rank_7:
+        #    self.board[move['target']] = 'Q'
+        #print(''.join(chess.board), 'side:', chess.side); input()
         self.side ^= 1    
 
     def take_back(self, move):
         self.board[move['target']] = move['captured']
         self.board[move['source']] = move['piece']
-        print(''.join(chess.board), 'side:', chess.side); input()
+        #print(''.join(chess.board), 'side:', chess.side); input()
         self.side ^= 1
 
     def search(self, depth):
@@ -79,25 +79,22 @@ class Chess:
                 if piece.islower(): score -= self.pst[square]
                 if piece.isupper(): score += self.pst[square]
         
-        return score
+        return -score if self.side else score
     
     def game_loop(self):
-        side = 0 if self.start_fen.split()[1] == 'w' else 1
-        print(side)        
         while True:
-            score = self.search(3)
+            score = self.search(2)
             self.make_move({
                 'source': self.best_source, 'target': self.best_target,
                 'piece': self.board[self.best_source], 'captured': self.board[self.best_target]
             })
-            side ^= 1
-            if side: print(''.join(self.board[::-1]).swapcase())
-            else: print(''.join(self.board))
+            print(''.join(chess.board), 'side:', self.side)
             input()
 
 if __name__ == '__main__':
     chess = Chess('settings.json')
-    for move in chess.generate_moves():
-        chess.make_move(move)
-        chess.take_back(move)
+    print(''.join(chess.board), 'side:', chess.side)
+    score = chess.search(4)
+    print(chess.best_source, chess.best_target)
+    #chess.game_loop()
     
