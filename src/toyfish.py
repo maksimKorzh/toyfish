@@ -47,8 +47,10 @@ class Chess:
     def make_move(self, move):
         self.board[move['target']] = move['piece']
         self.board[move['source']] = '.'
-        #if move['piece'] == 'P' and move['source'] in self.rank_7:
-        #    self.board[move['target']] = 'Q'
+        if move['piece'] == 'P' and move['source'] in self.rank_7:
+            self.board[move['target']] = 'Q'
+        if move['piece'] == 'p' and move['source'] in self.rank_2:
+            self.board[move['target']] = 'q'
         #print(''.join(chess.board), 'side:', chess.side); input()
         self.side ^= 1    
 
@@ -61,8 +63,7 @@ class Chess:
     def search(self, depth):
         if depth == 0: return self.evaluate();
         best_score = -10000;
-        old_score = best_score
-        temp_source, temp_target = -1, -1
+        best_source, best_target = -1, -1
         move_list = self.generate_moves()
         if not len(move_list): return 10000
         for move in move_list:
@@ -71,10 +72,10 @@ class Chess:
             self.take_back(move)
             if score > best_score:
                 best_score = score
-                temp_source = move['source']
-                temp_target = move['target']
-        self.best_source = temp_source
-        self.best_target = temp_target
+                best_source = move['source']
+                best_target = move['target']
+        self.best_source = best_source
+        self.best_target = best_target
         return best_score
 
     def evaluate(self):
@@ -89,7 +90,7 @@ class Chess:
         return -score if self.side else score
     
     def game_loop(self):
-        print(''.join([' ' + p for p in chess.board]), 'side:', self.side)
+        print(''.join([' ' + self.pieces[p] for p in chess.board]), 'side:', self.side)
         while True:
             raw = input(' your move: ')
             if len(raw) < 4: continue
@@ -99,15 +100,15 @@ class Chess:
                 'source': user_source, 'target': user_target,
                 'piece': self.board[user_source], 'captured': self.board[user_target]
             })
-            print(''.join([' ' + p for p in chess.board]), 'side:', self.side)
+            print(''.join([' ' + self.pieces[p] for p in chess.board]), 'side:', self.side)
             score = self.search(3)
             self.make_move({
                 'source': self.best_source, 'target': self.best_target,
                 'piece': self.board[self.best_source], 'captured': self.board[self.best_target]
             })
-            print(''.join([' ' + p for p in chess.board]), 'side:', self.side, '  score:', score)
+            print(''.join([' ' + self.pieces[p] for p in chess.board]), 'side:', self.side, '  score:', score)
             if abs(score) == 10000:
-                print('Checkmate!')
+                print(' Checkmate!')
                 break
 
 if __name__ == '__main__':
