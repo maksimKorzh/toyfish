@@ -12,7 +12,8 @@
  - 10x12 array based board representation
  - 3 nested loops move generation
  - Brute force negamax search algorithm
- - Material & PST evaluation 
+ - Material & PST evaluation
+ - simple CLI to play! 
  
  # Limitations
  - no castling
