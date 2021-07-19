@@ -7,11 +7,12 @@
 <hr>
 
 # Features
+ - Only 100 lines of code!
  - Source code & chess data are separated
  - 10x12 array based board representation
  - 3 nested loops move generation
  - Brute force negamax search algorithm
- - Material & PST evaluation
+ - Material & PST evaluation 
  
  # Limitations
  - no castling
