@@ -4,6 +4,7 @@
     <h4>Didactic chess program for absolute beginners in only 100 lines of python code!</h4>
   </h1>
 </div>
+<hr>
 
 # Features
  - Source code & chess data are separated
