@@ -1,3 +1,19 @@
-# Toyfish - your first chess
-Didactic chess engine for newcomers
-(work in progress... YouTube tutorials are coming soon...)
+# Toyfish: YOUR FIRST CHESS
+Didactic chess program for absolute beginners in only 100 lines of code!
+
+# Features
+ - 10x12 array based board representation
+ - 3 nested loops move generation
+ - Brute force negamax search algorithm
+ - Material & PST evaluation
+ 
+ # Limitations
+ - no castling
+ - no enpassant captures
+ - queen only promotions
+ - no stalemate detection
+ - no 3 fold repetition detections
+ - no move legality checking
+ 
+ # Step by step YouTUbe tutorials
+ are coming very soon!

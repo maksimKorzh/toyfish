@@ -1,9 +1,3 @@
-# coding: utf-8
-#####################################
-# Toyfish: YOUR FIRST CHESS PROGRAM #
-# Variant: Simplified western chess #
-#####################################
-
 import json
 class Chess:
     def __init__(self, variant):
@@ -82,9 +76,8 @@ class Chess:
                 score += self.weights[piece]
                 if piece.islower(): score -= self.pst[square]
                 if piece.isupper(): score += self.pst[square]
-        
         return -score if self.side else score
-    
+
     def game_loop(self):
         print(''.join([' ' + self.pieces[p] for p in chess.board]))
         while True:
@@ -103,7 +96,5 @@ class Chess:
             }); print(''.join([' ' + self.pieces[p] for p in chess.board]))
             if abs(score) == 10000: print('   Checkmate!'); break
 
-if __name__ == '__main__':
-    chess = Chess('settings.json')
-    chess.game_loop()
-    
+chess = Chess('settings.json')
+chess.game_loop()
