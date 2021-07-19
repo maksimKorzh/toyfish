@@ -62,11 +62,10 @@ class Chess:
         if depth == 0: return self.evaluate();
         best_score = -10000;
         old_score = best_score
-        temp_source = -1
-        temp_target = -1
-        for move in self.generate_moves():
-            if move['captured'] == 'K': return -20000
-            if move['captured'] == 'k': return 20000
+        temp_source, temp_target = -1, -1
+        move_list = self.generate_moves()
+        if not len(move_list): return 10000
+        for move in move_list:
             self.make_move(move)
             score = -self.search(depth - 1)
             self.take_back(move)
@@ -107,6 +106,9 @@ class Chess:
                 'piece': self.board[self.best_source], 'captured': self.board[self.best_target]
             })
             print(''.join([' ' + p for p in chess.board]), 'side:', self.side, '  score:', score)
+            if abs(score) == 10000:
+                print('Checkmate!')
+                break
 
 if __name__ == '__main__':
     chess = Chess('settings.json')
