@@ -1,7 +1,8 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/maksimKorzh/toyfish/main/toyfish.jpg" style="width: 50%; height: 50%"/>
-  <h1>Toyfish: YOUR FIRST CHESS<h1>
-  <h4>Didactic chess program for absolute beginners in only 100 lines of python code!</h4>
+  <h1>Toyfish: YOUR FIRST CHESS
+    <h4>Didactic chess program for absolute beginners in only 100 lines of python code!</h4>
+  </h1>
 </div
 
 # Features
