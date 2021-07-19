@@ -3,8 +3,7 @@
   <h1>Toyfish: YOUR FIRST CHESS
     <h4>Didactic chess program for absolute beginners in only 100 lines of python code!</h4>
   </h1>
-  <hr>
-</div
+</div>
 
 # Features
  - Source code & chess data are separated
