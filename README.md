@@ -8,7 +8,7 @@
 
 # Features
  - Only 100 lines of code!
- - Source code & chess data are separated
+ - Source code & chess rules data are separated
  - 10x12 array based board representation
  - 3 nested loops move generation
  - Brute force negamax search algorithm
