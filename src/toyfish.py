@@ -95,17 +95,13 @@ class Chess:
             self.make_move({
                 'source': user_source, 'target': user_target,
                 'piece': self.board[user_source], 'captured': self.board[user_target]
-            })
-            print(''.join([' ' + self.pieces[p] for p in chess.board]))
+            }); print(''.join([' ' + self.pieces[p] for p in chess.board]))
             score = self.search(3)
             self.make_move({
                 'source': self.best_source, 'target': self.best_target,
                 'piece': self.board[self.best_source], 'captured': self.board[self.best_target]
-            })
-            print(''.join([' ' + self.pieces[p] for p in chess.board]))
-            if abs(score) == 10000:
-                print('   Checkmate!')
-                break
+            }); print(''.join([' ' + self.pieces[p] for p in chess.board]))
+            if abs(score) == 10000: print('   Checkmate!'); break
 
 if __name__ == '__main__':
     chess = Chess('settings.json')
