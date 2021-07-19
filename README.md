@@ -7,21 +7,21 @@
 <hr>
 
 # Features
+ - simple CLI to play! 
  - Only 100 lines of code!
- - Source code & chess rules data are separated
- - 10x12 array based board representation
+ - Material & PST evaluation
  - 3 nested loops move generation
  - Brute force negamax search algorithm
- - Material & PST evaluation
- - simple CLI to play! 
+ - 10x12 array based board representation
+ - Source code & chess rules data are separated
  
  # Limitations
  - no castling
  - no enpassant captures
  - queen only promotions
  - no stalemate detection
- - no 3 fold repetition detections
  - no move legality checking
+ - no 3 fold repetition detections
  
  # Step by step YouTube tutorials
  are coming very soon!
