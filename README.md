@@ -1,4 +1,4 @@
-![IMAGE ALT TEXT HERE](https://raw.githubusercontent.com/maksimKorzh/toyfish/main/toyfish.jpg)
+<img src="https://raw.githubusercontent.com/maksimKorzh/toyfish/main/toyfish.jpg" style="width: 50%; height: 50%"/>
 
 # Toyfish: YOUR FIRST CHESS
 Didactic chess program for absolute beginners in only 100 lines of python code!
