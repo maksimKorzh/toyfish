@@ -7,8 +7,8 @@
 <hr>
 
 # Features
- - simple CLI to play! 
- - Only 100 lines of code!
+ - simple CLI to play
+ - Only 100 lines of code
  - Material & PST evaluation
  - 3 nested loops move generation
  - Brute force negamax search algorithm
@@ -24,4 +24,4 @@
  - no 3 fold repetition detections
  
  # Step by step YouTube tutorials
- are coming very soon!
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/supBtbFzG94/0.jpg)](https://www.youtube.com/watch?v=supBtbFzG94&list=PLmN0neTso3JyHJ4YqTo4IT8LPm4laNhZ5)

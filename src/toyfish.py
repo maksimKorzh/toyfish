@@ -78,7 +78,7 @@ class Chess:
                 if piece.isupper(): score += self.pst[square]
         return -score if self.side else score
 
-    def game_loop(self):
+    def play(self):
         print(''.join([' ' + self.pieces[p] for p in chess.board]))
         while True:
             raw = input('   Your move: ')
@@ -97,4 +97,4 @@ class Chess:
             if abs(score) == 10000: print('   Checkmate!'); break
 
 chess = Chess('settings.json')
-chess.game_loop()
+chess.play()
