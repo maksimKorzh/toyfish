@@ -36,12 +36,6 @@ class Chess:
                             'source': square, 'target': target_square,
                             'piece': piece, 'captured': captured_piece
                         })
-                        #self.board[target_square] = piece
-                        #self.board[square] = '.'
-                        #print(''.join([' ' + chess.pieces[p] for p in ''.join(chess.board)]), chess.side); input()
-                        #self.board[target_square] = captured_piece
-                        #self.board[square] = piece
-                        #print(''.join([' ' + chess.pieces[p] for p in ''.join(chess.board)]), chess.side); input()
                         if self.colors[captured_piece] == self.side ^ 1: break                        
                         if piece in 'PpNnKk': break
         return move_list
