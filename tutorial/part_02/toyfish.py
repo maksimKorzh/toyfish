@@ -1,4 +1,3 @@
-# coding: utf-8
 import json
 class Chess:
     def __init__(self, filename):

@@ -6,7 +6,7 @@ class Chess:
             self.board = list('         \n' * 2 + ' ' + ''.join([
                 '.' * int(c) if c.isdigit() else c
                 for c in self.fen.split()[0].replace('/', '\n ')
-            ]) + '\n' +  '         \n' * 2)
+            ]) + '\n' + '         \n' * 2)
             self.side = 0 if self.fen.split()[1] == 'w' else 1
 
     def generate_moves(self):
@@ -79,7 +79,7 @@ class Chess:
         return -score if self.side else score
 
     def play(self):
-        print(''.join([' ' + self.pieces[p] for p in chess.board]))
+        print(''.join([' ' + self.pieces[p] for p in self.board]))
         while True:
             raw = input('   Your move: ')
             if len(raw) < 4: continue
@@ -88,12 +88,12 @@ class Chess:
             self.make_move({
                 'source': user_source, 'target': user_target,
                 'piece': self.board[user_source], 'captured': self.board[user_target]
-            }); print(''.join([' ' + self.pieces[p] for p in chess.board]))
+            }); print(''.join([' ' + self.pieces[p] for p in self.board]))
             score = self.search(3)
             self.make_move({
                 'source': self.best_source, 'target': self.best_target,
                 'piece': self.board[self.best_source], 'captured': self.board[self.best_target]
-            }); print(''.join([' ' + self.pieces[p] for p in chess.board]))
+            }); print(''.join([' ' + self.pieces[p] for p in self.board]))
             if abs(score) == 10000: print('   Checkmate!'); break
 
 chess = Chess('settings.json')
