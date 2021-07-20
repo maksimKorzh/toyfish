@@ -1,5 +1,4 @@
 # coding: utf-8
-# %load toyfish.py
 import json
 class Chess:
     def __init__(self, filename):
