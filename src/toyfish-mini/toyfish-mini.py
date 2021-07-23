@@ -39,9 +39,7 @@ def X(x):
       b[s]=46;b[h]=t;b[-1]^=1
       if t==P and s in f(31,39):b[h]=Q
       if t==p and s in f(81,89):b[h]=q
-      v=-X(x-1)
-      b[s]=t;b[h]=c;b[-1]^=1
-      b[-2]=s;b[-3]=h
+      v=-X(x-1);b[s]=t;b[h]=c;b[-1]^=1;b[-2]=s;b[-3]=h
       if v>l:l=v;u=s;g=h;
       if c!=46 and (c>>7)&1==b[-1]^1:break
       if chr(t&C) in 'PpNnKk': break
