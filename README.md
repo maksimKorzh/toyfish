@@ -3,6 +3,7 @@
   <h1>Toyfish: YOUR FIRST CHESS PROGRAM
     <h4>Didactic chess engine for absolute beginners in only 100 lines of python code!</h4>
   </h1>
+  <a href="https://github.com/maksimKorzh/toyfish/blob/main/src/toyfish.py">Toyfish</a> |
   <a href="https://github.com/maksimKorzh/toyfish/blob/main/src/toyfish-mini/toyfish-mini.py">Toyfish mini</a> |
   <a href="https://github.com/maksimKorzh/toyfish/blob/main/src/toyfish-mini/specs.txt">Toyfish mini specs</a>
 </div>
